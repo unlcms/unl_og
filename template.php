@@ -160,7 +160,7 @@ function unl_og_get_front_group_id() {
   $front_url = drupal_get_normal_path(variable_get('site_frontpage', 'node'));
   $front_url = trim($front_url, '/');
   $front = explode('/', $front_url);
-  if ($front[0]=='node' && ctype_digit($front[1])) {
+  if (isset($front[0], $front[1]) && $front[0]=='node' && ctype_digit($front[1])) {
     $front_nid = $front[1];
   }
   return $front_nid;
