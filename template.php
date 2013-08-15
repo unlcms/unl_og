@@ -134,6 +134,16 @@ function unl_og_breadcrumb($variables) {
 function unl_og_get_current_group() {
   if (module_exists('og_context')) {
     $group_context = og_context();
+
+    //Set the og context if we are viewing a views page with an og context
+    if (empty($group_context) && $view = views_get_page_view()) {
+      if ($view->display_handler->plugin_name == 'page' && isset($view->argument['gid'])) {
+        //The gid should be an argument
+        og_context('node', node_load($view->argument['gid']->argument));
+        $group_context = og_context();
+      }
+    }
+
     if ($group_context) {
       return node_load($group_context['gid']);
     }
@@ -153,18 +163,4 @@ function unl_og_get_front_group_id() {
     $front_nid = $front[1];
   }
   return $front_nid;
-}
-
-/**
- * Set og context for view pages
- *
- * implements hook_views_pre_render
- *
- * @param $view
- */
-function unl_og_views_pre_render(&$view) {
-  if ($view->display_handler->plugin_name == 'page' && isset($view->argument['gid'])) {
-    //The gid should be an argument
-    og_context('node', node_load($view->argument['gid']->argument));
-  }
 }
