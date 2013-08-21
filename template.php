@@ -164,3 +164,14 @@ function unl_og_get_front_group_id() {
   }
   return $front_nid;
 }
+
+/**
+ * Set og context for view pages if not already set
+ *
+ * implements hook_views_pre_render
+ *
+ * @param $view
+ */
+function unl_og_views_pre_render(&$view) {
+  unl_og_get_current_group();
+} 
